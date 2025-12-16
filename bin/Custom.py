@@ -1,10 +1,11 @@
 import tkinter as tk
 import json
+from colorama import Fore
 
 
 
 
-with open("bin/config.json", "r", encoding="utf8") as file: 
+with open("config.json", "r", encoding="utf8") as file: 
     configdata = json.load(file)
 
 foreground = configdata["fg"]
@@ -24,8 +25,9 @@ def on_close():
     for e in emoji_var.get(): emojilist.append(e)
     configdata.update({"emojis": emojilist})
 
-    with open("bin/config.json", "w", encoding="utf8") as file:
+    with open("config.json", "w", encoding="utf8") as file:
         json.dump(configdata, file)
+        print(Fore.GREEN + "[/] Dumped New Config Data")
             
     root.destroy()
 
@@ -75,7 +77,6 @@ for status in configdata["status_messages"]:
     button.pack(side="right")
 
 entry_var = tk.StringVar()
-
 emoji_var = tk.StringVar()
 
 
@@ -106,6 +107,8 @@ adderbutton.pack(side="right")
 
 root.protocol("WM_DELETE_WINDOW", on_close)
 
+print(Fore.GREEN + "[+] Customization Window Opened.")
 root.mainloop()
 
 
+print(Fore.RED + "[-] Customization Window Closed.")

@@ -1,16 +1,16 @@
 import tkinter as tk
 import zmq
 import threading
-import time
 import json
 import subprocess
+from colorama import Fore
 
 afk = False
 current_text = ""
 closing = False
 
 
-with open("bin/config.json", "r", encoding="utf8") as file: 
+with open("config.json", "r", encoding="utf8") as file: 
     configdata = json.load(file)
 
 foreground = configdata["fg"]
@@ -26,7 +26,7 @@ def afk_toggle():
     afkbutton.config(fg="green" if afk else "yellow")
 
 def customwindow():
-    custompy = subprocess.Popen(["python", "bin/Custom.py"])
+    custompy = subprocess.Popen(["python", "Custom.py"])
 
 root = tk.Tk()
 root.title("Ri's Chatbox")
@@ -59,19 +59,26 @@ entry_var.trace_add("write", on_input_change)
 entry = tk.Entry(root, textvariable=entry_var, width=30)
 entry.pack(pady=7)
 entry.config(bg=background, fg=foreground)
-root.iconbitmap("bin/icon.ico")
+root.iconbitmap("icon.ico")
 
+closingmsgsent = False
 def zmq_thread():
     global current_text
     global afk
     global closing
+    global closingmsgsent
     context = zmq.Context()
     socket = context.socket(zmq.REQ)
     socket.connect("tcp://127.0.0.1:8391")
+    print(Fore.GREEN + "[+] Chat.py has Connected to Socket.")
     while True:
         socket.send_json({"client": "chat", "afk": afk, "chatboxmessage": current_text, "closing": closing})
         message = socket.recv_json()
-        if closing: root.after(0, lambda: label.config(text="Ending Socket Connection..."))
+        if closing:
+            root.after(0, lambda: label.config(text="Ending Socket Connection..."))
+            if not closingmsgsent:
+                print(Fore.RED + "[-] Ending Socket Connection...")
+                closingmsgsent = True
         elif message["chatbox"]: root.after(0, lambda: label.config(text=message["chatbox"]))
         
         
