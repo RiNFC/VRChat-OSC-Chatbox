@@ -16,6 +16,7 @@ root.title("Customization")
 root.geometry("800x700")
 root.config(bg=background)
 root.attributes('-topmost', True)
+root.iconbitmap("icon.ico")
 
 
 def on_close():

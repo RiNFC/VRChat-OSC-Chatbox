@@ -33,6 +33,7 @@ root.title("Ri's Chatbox")
 root.geometry("200x190")
 root.config(bg=background)
 root.attributes('-topmost', True) 
+root.iconbitmap("icon.ico")
 
 def on_close():
     global closing
@@ -59,7 +60,7 @@ entry_var.trace_add("write", on_input_change)
 entry = tk.Entry(root, textvariable=entry_var, width=30)
 entry.pack(pady=7)
 entry.config(bg=background, fg=foreground)
-root.iconbitmap("icon.ico")
+
 
 closingmsgsent = False
 def zmq_thread():
