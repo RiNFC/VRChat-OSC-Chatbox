@@ -44,7 +44,17 @@ def secondsToTime(seconds):
     return f"{hours:2d}:{minutes:02d}:{seconds:02d}"
 
 def get_current_spotify_song():
-    current = sp.current_user_playing_track()
+    try:
+        current = sp.current_user_playing_track()
+    except: 
+        sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+        client_id=CLIENT_ID,
+        client_secret=CLIENT_SECRET,
+        redirect_uri=REDIRECT_URI,
+        scope="user-read-currently-playing"
+    ))
+        current = sp.current_user_playing_track()
+        
     if current is None or current.get("item") is None:
         return {}
 
