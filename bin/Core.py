@@ -11,6 +11,13 @@ import random
 from colorama import Fore
 
 
+superscript_numbers = [
+    "⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"
+]
+
+normal_numbers = [
+    "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"
+]
 
 core_start = time.time()
 custompy = None
@@ -36,6 +43,47 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
         redirect_uri=REDIRECT_URI,
         scope="user-read-currently-playing"
     ))
+
+def secondsToTimeH(seconds):
+    seconds = int(seconds)  # convert float → int
+    minutes, seconds = divmod(seconds, 60)
+    hours, minutes = divmod(minutes, 60)
+    return f"{minutes:2d}:{seconds:02d}"
+
+def progressbar(progress, duration):
+    barstr = ""
+    progstr = ""
+    durastr = ""
+    timeindex = round(((progress/1000)/(duration/1000))*10)
+    for i in range(0, 11):
+        if i <= timeindex: 
+            barstr = barstr + "▓"
+        else: barstr = barstr + "░"
+    
+    ts = secondsToTimeH(progress/1000)
+    first = False
+    first2 = False
+
+    for c in secondsToTimeH(duration/1000):
+        try:
+            sixseven2 = normal_numbers.index(c)
+            durastr = durastr + superscript_numbers[sixseven2]
+        except ValueError:
+            if first2:
+                durastr = durastr + "'"
+            else: first2 = True
+
+    for pmo in ts:
+        try:
+            sixseven = normal_numbers.index(pmo)
+            progstr = progstr + superscript_numbers[sixseven]
+        except ValueError:
+            if first:
+                progstr = progstr + "'"
+            else: first = True
+    return(f"{progstr} {barstr} {durastr}")
+
+
 
 def secondsToTime(seconds):
     seconds = int(seconds)
@@ -63,7 +111,9 @@ def get_current_spotify_song():
         "title": item["name"],
         "artist": item["artists"][0]["name"],
         "album": item["album"]["name"],
-        "is_playing": current["is_playing"]
+        "is_playing": current["is_playing"],
+        "progress": current["progress_ms"],
+        "duration": item["duration_ms"]
     }
 
 def insert_string_at_index(original_string, string_to_insert, index):
@@ -94,6 +144,7 @@ def get_gpu_status_no_popup():
 
 endstr = ""
 chatbox = ""
+barstr = ""
 
 chatpy = subprocess.Popen(["python", "Chat.py"])
 
@@ -119,24 +170,32 @@ while True:
         socket.recv_json()
         socket.send_json(primarydata)
         continue
+    
+    endstrformat = str(configdata["endstrformat"])
 
     loop_time = time.time()
-    gpus = get_gpu_status_no_popup()
-    gpu = gpus[0]
-    spotstr = "⏸️"
-    spotifyret = get_current_spotify_song()
-    if spotifyret:
-        titless = str(spotifyret["title"])
-        if len(str(spotifyret["title"])) > 18:
-            titless = insert_string_at_index(str(spotifyret["title"]), "...[]]\-=", 17)
-        spotemoji = "⏸️"
-        if spotifyret["is_playing"]:
-            spotemoji = "🎵"
-        spotstr = f"{spotemoji} {titless.split('[]]\-=')[0]} ᵇʸ {spotifyret['artist']}"
+
+    if endstrformat.count(r"{spotstr}"):
+        spotstr = "⏸️"
+        spotifyret = get_current_spotify_song()
+        if spotifyret:
+            titless = str(spotifyret["title"])
+            if len(str(spotifyret["title"])) > 18:
+                titless = insert_string_at_index(str(spotifyret["title"]), "...[]]\-=", 17)
+            spotemoji = "⏸️"
+            if spotifyret["is_playing"]:
+                spotemoji = "🎵"
+            spotstr = f"{spotemoji} {titless.split('[]]\-=')[0]} ᵇʸ {spotifyret['artist']}"
+            barstr = progressbar(spotifyret["progress"], spotifyret["duration"])
 
 
     timestr = f"⏱️ ᴾˡᵃʸ ᵀᶦᵐᵉ {secondsToTime(time.time() - core_start)}"
-    gpustat = f"ᵍᵖᵘ {int(gpu.load*50)}% ¦ ᵛʳᵃᵐ {round(gpu.memoryUsed, 1 )}/{round(gpu.memoryTotal, 1)}Gb"
+
+    if endstrformat.count(r"{gpustatstr}"):
+        gpus = get_gpu_status_no_popup()
+        gpu = gpus[0]
+        gpustatstr = f"ᵍᵖᵘ {int(gpu.load*50)}% ¦ ᵛʳᵃᵐ {round(gpu.memoryUsed, 1 )}/{round(gpu.memoryTotal, 1)}Gb"
+
     statstr = f"{random.choice(configdata["emojis"])} {configdata["status_messages"][statindex]}"
 
     
@@ -178,7 +237,17 @@ while True:
     socket.send_json(primarydata)
     
 
-    endstr = f"{statstr}\n{gpustat}\n{timestr}\n{spotstr}\n{chatbox}"
+    
+
+    based = str(endstrformat).replace(" ", "\n")
+
+    based = based.replace(r"{statstr}", statstr).replace(r"{gpustatstr}", gpustatstr).replace(r"{timestr}", timestr).replace(r"{spotstr}", spotstr).replace(r"{chatbox}", chatbox).replace(r"{barstr}", barstr)
+
+
+    endstr = based
+
+    #endstr = f"{statstr}\n{gpustatstr}\n{timestr}\n{spotstr}\n{chatbox}"
+
 
     client.send_message("/chatbox/input", [endstr, True, False])
 
