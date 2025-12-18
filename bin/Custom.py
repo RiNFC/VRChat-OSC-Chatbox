@@ -3,8 +3,6 @@ import json
 from colorama import Fore
 
 
-
-
 with open("config.json", "r", encoding="utf8") as file: 
     configdata = json.load(file)
 
@@ -21,10 +19,13 @@ root.iconbitmap("icon.ico")
 
 def on_close():
     global configdata
+    global format_var
+    global bg_var
+    global fg_var
     emojilist = []
 
     for e in emoji_var.get(): emojilist.append(e)
-    configdata.update({"emojis": emojilist})
+    configdata.update({"emojis": emojilist, "endstrformat": format_var.get(), "fg": fg_var.get(), "bg": bg_var.get()})
 
     with open("config.json", "w", encoding="utf8") as file:
         json.dump(configdata, file)
@@ -45,6 +46,7 @@ def create_status_row(status):
         bg=background,
         command=lambda r=row, s=status: deletecmd(r, s))
     button.pack(side="right")
+
 
 
 def add_status():
@@ -77,10 +79,19 @@ for status in configdata["status_messages"]:
         command=lambda r=row, s=status: deletecmd(r, s))
     button.pack(side="right")
 
+
+
 entry_var = tk.StringVar()
 emoji_var = tk.StringVar()
+format_var = tk.StringVar()
+fg_var = tk.StringVar()
+bg_var = tk.StringVar()
 
+fg_var.set(configdata["fg"])
+bg_var.set(configdata["bg"])
 
+ 
+format_var.set(configdata["endstrformat"])
 
 adderrow = tk.Frame(root, bg=background)
 adderrow.pack(fill="x", pady=10)
@@ -90,6 +101,11 @@ entry = tk.Entry(adderrow, textvariable=entry_var, width=30)
 entry.pack(pady=7)
 entry.config(bg=background, fg=foreground)
 
+formatentry = tk.Entry(adderrow, textvariable=format_var, width=70)
+formatentry.pack(pady=7)
+formatentry.config(bg=background, fg=foreground)
+
+
 
 emoji_var.set("".join(configdata["emojis"]).replace("️", ""))
 
@@ -98,12 +114,20 @@ emojientry = tk.Entry(adderrow, textvariable=emoji_var, width=30)
 emojientry.pack(pady=7)
 emojientry.config(bg=background, fg=foreground)
 
+
+
+fgentry = tk.Entry(adderrow, textvariable=fg_var, width=6)
+fgentry.pack(pady=0, side="right")
+fgentry.config(bg=background, fg=foreground)
+
+bgentry = tk.Entry(adderrow, textvariable=bg_var, width=6)
+bgentry.pack(pady=0, side="right")
+bgentry.config(bg=background, fg=foreground)
+
+
+
 adderbutton = tk.Button(adderrow, text="Add", fg=foreground, bg=background, command=add_status)
 adderbutton.pack(side="right")
-
-
-
-
 
 
 root.protocol("WM_DELETE_WINDOW", on_close)

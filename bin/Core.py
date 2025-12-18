@@ -145,6 +145,8 @@ def get_gpu_status_no_popup():
 endstr = ""
 chatbox = ""
 barstr = ""
+gpustatstr = ""
+spotstr = ""
 
 chatpy = subprocess.Popen(["python", "Chat.py"])
 
