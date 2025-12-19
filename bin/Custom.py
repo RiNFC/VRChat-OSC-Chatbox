@@ -1,6 +1,7 @@
 import tkinter as tk
 import json
 from colorama import Fore
+from tkinter.filedialog import askopenfilename
 
 
 with open("config.json", "r", encoding="utf8") as file: 
@@ -9,13 +10,26 @@ with open("config.json", "r", encoding="utf8") as file:
 foreground = configdata["fg"]
 background = configdata["bg"]
 
+
 root = tk.Tk()
 root.title("Customization")
-root.geometry("800x700")
+root.geometry("900x700")
 root.config(bg=background)
 root.attributes('-topmost', True)
-root.iconbitmap("icon.ico")
+root.iconbitmap(configdata["iconpath"])
 
+
+
+
+def iconfileselect():
+    file_types = (
+    ("Icon files", "*.ico"),
+    ("All files", "*.*")
+    )
+    
+    path = askopenfilename(filetypes=file_types)
+    if path:
+        configdata.update({"iconpath": path})
 
 def on_close():
     global configdata
@@ -25,7 +39,7 @@ def on_close():
     emojilist = []
 
     for e in emoji_var.get(): emojilist.append(e)
-    configdata.update({"emojis": emojilist, "endstrformat": format_var.get(), "fg": fg_var.get(), "bg": bg_var.get()})
+    configdata.update({"emojis": emojilist, "endstrformat": format_var.get(), "fg": fg_var.get(), "bg": bg_var.get(), "title": title_var.get()})
 
     with open("config.json", "w", encoding="utf8") as file:
         json.dump(configdata, file)
@@ -86,9 +100,11 @@ emoji_var = tk.StringVar()
 format_var = tk.StringVar()
 fg_var = tk.StringVar()
 bg_var = tk.StringVar()
+title_var = tk.StringVar()
 
 fg_var.set(configdata["fg"])
 bg_var.set(configdata["bg"])
+title_var.set(configdata["title"])
 
  
 format_var.set(configdata["endstrformat"])
@@ -100,6 +116,20 @@ adderrow.pack(fill="x", pady=10)
 entry = tk.Entry(adderrow, textvariable=entry_var, width=30)
 entry.pack(pady=7)
 entry.config(bg=background, fg=foreground)
+
+adderbutton = tk.Button(adderrow, text="Add", fg=foreground, bg=background, command=add_status)
+adderbutton.pack(side="right")
+
+formatinfo = r"""
+{statstr}: Status Bar
+{gpustatstr}: GPU Stats
+{timestr}: Current Playtime
+{spotstr}: Spotify
+{barstr}: Spotify Progress Bar
+{chatbox}: The Fucking Chatbox"""
+
+formatinfolabel = tk.Label(adderrow, text=formatinfo, bg=background, fg=foreground)
+formatinfolabel.pack(anchor="w")
 
 formatentry = tk.Entry(adderrow, textvariable=format_var, width=70)
 formatentry.pack(pady=7)
@@ -114,20 +144,26 @@ emojientry = tk.Entry(adderrow, textvariable=emoji_var, width=30)
 emojientry.pack(pady=7)
 emojientry.config(bg=background, fg=foreground)
 
+titleentry = tk.Entry(root, textvariable=title_var, width=20)
+titleentry.pack(pady=3, side="right", anchor="n")
+titleentry.config(bg=background, fg=foreground)
 
-
-fgentry = tk.Entry(adderrow, textvariable=fg_var, width=6)
+fgentry = tk.Entry(root, textvariable=fg_var, width=6)
 fgentry.pack(pady=0, side="right")
 fgentry.config(bg=background, fg=foreground)
 
-bgentry = tk.Entry(adderrow, textvariable=bg_var, width=6)
+bgentry = tk.Entry(root, textvariable=bg_var, width=6)
 bgentry.pack(pady=0, side="right")
 bgentry.config(bg=background, fg=foreground)
 
 
 
-adderbutton = tk.Button(adderrow, text="Add", fg=foreground, bg=background, command=add_status)
-adderbutton.pack(side="right")
+
+
+
+
+iconbutton = tk.Button(root, text="icon", fg=foreground, bg=background, command=iconfileselect)
+iconbutton.pack(side="right", padx=2)
 
 
 root.protocol("WM_DELETE_WINDOW", on_close)

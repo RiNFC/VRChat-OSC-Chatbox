@@ -26,6 +26,14 @@ message = None
 with open("config.json", "r", encoding="utf-8") as file:
     configdata = json.load(file)
 
+try:
+    with open(".timecache", "r") as file:
+        timecache = json.load(file)
+        if time.time() - timecache["closingtime"] < 300:
+            core_start = timecache["core_start"]
+
+except: pass
+
 dotenv.load_dotenv()
 
 ip = "127.0.0.1"
@@ -82,7 +90,7 @@ def progressbar(progress, duration):
                 progstr = progstr + "'"
             else: first = True
     return(f"{progstr} {barstr} {durastr}")
-
+# Bugs Line of Code
 
 
 def secondsToTime(seconds):
@@ -202,6 +210,8 @@ while True:
 
     
     
+
+    
     statindex += 1
     if statindex >= len(configdata["status_messages"]):
         statindex = 0
@@ -236,7 +246,7 @@ while True:
         chatbox = message["chatboxmessage"]
 
 
-    socket.send_json(primarydata)
+    
     
 
     
@@ -252,10 +262,16 @@ while True:
 
 
     client.send_message("/chatbox/input", [endstr, True, False])
+    socket.send_json(primarydata)
 
 
 
 chatpy.terminate()
 chatpy.wait()
+
+print(Fore.RESET)
+
+with open(".timecache", "w") as file:
+    json.dump({"closingtime": time.time(), "core_start": core_start}, file)
 
 os.system("pause")

@@ -4,6 +4,7 @@ import threading
 import json
 import subprocess
 from colorama import Fore
+import time
 
 afk = False
 current_text = ""
@@ -29,11 +30,11 @@ def customwindow():
     custompy = subprocess.Popen(["python", "Custom.py"])
 
 root = tk.Tk()
-root.title("Ri's Chatbox")
+root.title(configdata["title"])
 root.geometry("200x190")
 root.config(bg=background)
 root.attributes('-topmost', True) 
-root.iconbitmap("icon.ico")
+root.iconbitmap(configdata["iconpath"])
 
 def on_close():
     global closing
@@ -91,3 +92,4 @@ threading.Thread(target=zmq_thread, daemon=True).start()
 root.protocol("WM_DELETE_WINDOW", on_close)
 
 root.mainloop()
+
