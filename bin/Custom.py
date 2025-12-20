@@ -121,6 +121,7 @@ adderbutton = tk.Button(adderrow, text="Add", fg=foreground, bg=background, comm
 adderbutton.pack(side="right")
 
 formatinfo = r"""
+List of all Format Vars: (Seperate by Spaces)
 {statstr}: Status Bar
 {gpustatstr}: GPU Stats
 {timestr}: Current Playtime

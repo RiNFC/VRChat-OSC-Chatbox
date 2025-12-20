@@ -9,6 +9,7 @@ from pythonosc.udp_client import SimpleUDPClient
 import time
 import random
 from colorama import Fore
+from datetime import datetime
 
 
 superscript_numbers = [
@@ -51,6 +52,9 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
         redirect_uri=REDIRECT_URI,
         scope="user-read-currently-playing"
     ))
+
+def get_current_time():
+    return datetime.now().strftime("%I:%M %p")
 
 def secondsToTimeH(seconds):
     seconds = int(seconds)  # convert float → int
