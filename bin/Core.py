@@ -8,10 +8,10 @@ from spotipy.oauth2 import SpotifyOAuth
 from pythonosc.udp_client import SimpleUDPClient
 import time
 import random
-from colorama import Fore
+from colorama import Fore, init
 from datetime import datetime
 
-
+init()
 superscript_numbers = [
     "⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"
 ]
@@ -175,10 +175,13 @@ primarydata = {
     "afk": False
 }
 
+paterns= ["∘·•∘·•∘·•∘·•∘·•", "｡･ﾟ･｡･ﾟ･｡･ﾟ･", "┈┊┈┊┈┊┈┊┈", "˙·˙·˙·˙·˙·", "◌◦∘·∘◦◌◦∘·∘"]
+
 statindex = 0
 loop_time = time.time()
 afkvalset = False
 afktime = 0
+newprimary = paterns[configdata["swirlindex"]-1]
 while True:
     if loop_time+2 > time.time():
         socket.recv_json()
@@ -251,13 +254,15 @@ while True:
 
 
     
-    
-
+    if endstrformat.count(r"{swirlstr}"):
+        firststr = newprimary[0]
+        newprimary = newprimary.removeprefix(firststr)
+        newprimary = newprimary + firststr
     
 
     based = str(endstrformat).replace(" ", "\n")
 
-    based = based.replace(r"{statstr}", statstr).replace(r"{gpustatstr}", gpustatstr).replace(r"{timestr}", timestr).replace(r"{spotstr}", spotstr).replace(r"{chatbox}", chatbox).replace(r"{barstr}", barstr)
+    based = based.replace(r"{statstr}", statstr).replace(r"{gpustatstr}", gpustatstr).replace(r"{timestr}", timestr).replace(r"{spotstr}", spotstr).replace(r"{chatbox}", chatbox).replace(r"{barstr}", barstr).replace(r"{swirlstr}", newprimary)
 
 
     endstr = based

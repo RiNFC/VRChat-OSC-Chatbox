@@ -1,3 +1,3 @@
 @echo off
-cd bin
-start "" python Core.py
+cd .\bin\
+start /min python Core.py

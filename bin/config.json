@@ -25,6 +25,7 @@
   "title": "Ri's Chatbox",
   "fg": "yellow",
   "bg": "black",
-  "endstrformat": "{statstr} {gpustatstr} {timestr} {spotstr} {chatbox}",
-  "iconpath": "icon.ico"
+  "endstrformat": "{swirlstr}",
+  "iconpath": "icon.ico",
+  "swirlindex": 2
 }

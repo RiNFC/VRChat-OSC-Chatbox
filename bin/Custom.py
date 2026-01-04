@@ -101,10 +101,12 @@ format_var = tk.StringVar()
 fg_var = tk.StringVar()
 bg_var = tk.StringVar()
 title_var = tk.StringVar()
+swirl_var = tk.StringVar()
 
 fg_var.set(configdata["fg"])
 bg_var.set(configdata["bg"])
 title_var.set(configdata["title"])
+swirl_var.set(configdata["swirlindex"])
 
  
 format_var.set(configdata["endstrformat"])
@@ -127,7 +129,8 @@ List of all Format Vars: (Seperate by Spaces)
 {timestr}: Current Playtime
 {spotstr}: Spotify
 {barstr}: Spotify Progress Bar
-{chatbox}: The Fucking Chatbox"""
+{chatbox}: The Fucking Chatbox
+{swirlstr}: Swirl Custom Effect Thing Kys"""
 
 formatinfolabel = tk.Label(adderrow, text=formatinfo, bg=background, fg=foreground)
 formatinfolabel.pack(anchor="w")
@@ -159,7 +162,9 @@ bgentry.config(bg=background, fg=foreground)
 
 
 
-
+swirlentry = tk.Entry(root, textvariable=swirl_var, width=6)
+swirlentry.pack(pady=0, side="right")
+swirlentry.config(bg=background, fg=foreground)
 
 
 
