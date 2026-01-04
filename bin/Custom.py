@@ -36,10 +36,11 @@ def on_close():
     global format_var
     global bg_var
     global fg_var
+    global swirl_var
     emojilist = []
 
     for e in emoji_var.get(): emojilist.append(e)
-    configdata.update({"emojis": emojilist, "endstrformat": format_var.get(), "fg": fg_var.get(), "bg": bg_var.get(), "title": title_var.get()})
+    configdata.update({"emojis": emojilist, "endstrformat": format_var.get(), "fg": fg_var.get(), "bg": bg_var.get(), "title": title_var.get(), "swirlindex": int(swirl_var.get())})
 
     with open("config.json", "w", encoding="utf8") as file:
         json.dump(configdata, file)

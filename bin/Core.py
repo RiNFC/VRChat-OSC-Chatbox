@@ -12,6 +12,17 @@ from colorama import Fore, init
 from datetime import datetime
 
 init()
+
+print(Fore.MAGENTA + "[;] Experimental Swirl Str")
+print("""Paterns:
+1, ∘·•∘·•∘·•∘·•∘·•
+2, ｡･ﾟ･｡･ﾟ･｡･ﾟ･
+3, ┈┊┈┊┈┊┈┊┈
+4, ˙·˙·˙·˙·˙·
+5, ◌◦∘·∘◦◌◦∘·∘\n""")
+
+
+
 superscript_numbers = [
     "⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹"
 ]
@@ -229,7 +240,7 @@ while True:
                     configdata = newdata
                     print(Fore.GREEN + "[+] Updated Config Data Successfully.")
                 except: print(Fore.RED + "[-] Config Data Failed to Load.")
-
+                newprimary = paterns[configdata["swirlindex"]-1]
     primarydata.update({"chatbox": endstr})
 
 
