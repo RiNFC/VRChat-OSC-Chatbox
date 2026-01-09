@@ -17,3 +17,8 @@ Fill in the Above with your Own Spotify App Credentials.
 ### Don't fucking use this
 
 This is a Shitty tool made out of pure spite, Unless you have Prior programming Knowledge and are willing to add all the things I didn't yourself, Don't use this.
+
+
+### Finished
+
+The entire project is essentially entirely done, Of Course I could make a better GUI or add more features.. But I am lazy so No.
