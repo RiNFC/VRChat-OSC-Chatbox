@@ -67,6 +67,8 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
 def get_current_time():
     return datetime.now().strftime("%I:%M %p")
 
+
+
 def secondsToTimeH(seconds):
     seconds = int(seconds)  # convert float → int
     minutes, seconds = divmod(seconds, 60)
@@ -105,7 +107,7 @@ def progressbar(progress, duration):
                 progstr = progstr + "'"
             else: first = True
     return(f"{progstr} {barstr} {durastr}")
-# Bugs Line of Code
+
 
 
 def secondsToTime(seconds):
@@ -217,7 +219,7 @@ while True:
             barstr = progressbar(spotifyret["progress"], spotifyret["duration"])
 
 
-    timestr = f"⏱️ ᴾˡᵃʸ ᵀᶦᵐᵉ {secondsToTime(time.time() - core_start)}"
+    playtimestr = f"⏱️ ᴾˡᵃʸ ᵀᶦᵐᵉ {secondsToTime(time.time() - core_start)}"
 
     if endstrformat.count(r"{gpustatstr}"):
         gpus = get_gpu_status_no_popup()
@@ -273,7 +275,7 @@ while True:
 
     based = str(endstrformat).replace(" ", "\n")
 
-    based = based.replace(r"{statstr}", statstr).replace(r"{gpustatstr}", gpustatstr).replace(r"{timestr}", timestr).replace(r"{spotstr}", spotstr).replace(r"{chatbox}", chatbox).replace(r"{barstr}", barstr).replace(r"{swirlstr}", newprimary)
+    based = based.replace(r"{statstr}", statstr).replace(r"{gpustatstr}", gpustatstr).replace(r"{playtimestr}", playtimestr).replace(r"{spotstr}", spotstr).replace(r"{chatbox}", chatbox).replace(r"{barstr}", barstr).replace(r"{swirlstr}", newprimary).replace(r"{timestr}", get_current_time())
 
 
     endstr = based

@@ -127,11 +127,12 @@ formatinfo = r"""
 List of all Format Vars: (Seperate by Spaces)
 {statstr}: Status Bar
 {gpustatstr}: GPU Stats
-{timestr}: Current Playtime
+{playtimestr}: Current Playtime
 {spotstr}: Spotify
 {barstr}: Spotify Progress Bar
 {chatbox}: The Fucking Chatbox
-{swirlstr}: Swirl Custom Effect Thing Kys"""
+{swirlstr}: Swirl Custom Effect Thing Kys
+{timestr}: Current local time, Love you to Coffee, Now kys"""
 
 formatinfolabel = tk.Label(adderrow, text=formatinfo, bg=background, fg=foreground)
 formatinfolabel.pack(anchor="w")
