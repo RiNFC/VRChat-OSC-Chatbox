@@ -1,1 +1,24 @@
-{"status_messages": ["Sanctitas tua", "Ri is Pronounced Rye", "Coronal Mass Ejection", "Disc: ri.rye", "Molly Molasses!", "Purity Unlike No Other", "Creationist Propaganda", "Oculi Paucorum", "Catholics DNI", "Skid My Code Pls :3"], "emojis": ["\u271d", "\u2626", "\ud83d\uded0", "\u262a", "\u2721", "\ud83d\udd49", "\u2638", "\u262e", "\u269b"], "title": "Ri's Chatbox", "fg": "yellow", "bg": "black", "endstrformat": "{swirlstr}", "iconpath": "icon.ico", "swirlindex": 2}
+{
+  "status_messages": [
+    "Placeholder Status 1",
+    "Placeholder status 2",
+    "Skid my Code pls OwO :3"
+  ],
+  "emojis": [
+    "✝",
+    "☦",
+    "🛐",
+    "☪",
+    "✡",
+    "🕉",
+    "☸",
+    "☮",
+    "⚛"
+  ],
+  "title": "Ri's Chatbox",
+  "fg": "yellow",
+  "bg": "black",
+  "endstrformat": "{statstr} {timestr} {chatbox}",
+  "iconpath": "icon.ico",
+  "swirlindex": 2
+}
