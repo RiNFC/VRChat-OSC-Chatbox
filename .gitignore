@@ -1,3 +1,4 @@
 .cache
 .env
 bin/.timecache
+bin/config.json
