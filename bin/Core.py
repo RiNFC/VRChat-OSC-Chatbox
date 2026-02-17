@@ -48,8 +48,20 @@ except: pass
 
 dotenv.load_dotenv()
 
-ip = "127.0.0.1"
+
 port = 9000
+
+try: ip = configdata["ip"]
+except:
+    ip = "127.0.0.1"
+    if ".ip" in os.listdir():
+        with open(".ip", "r", encoding="utf8") as file:
+            ip = file.read()
+            with open("config.json", "w", encoding="utf8") as file:
+                json.dump(configdata.update({"ip": ip}))
+        os.remove(".ip")
+        
+    
 
 client = SimpleUDPClient(ip, port)
 
