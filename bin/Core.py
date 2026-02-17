@@ -57,11 +57,11 @@ except:
     if ".ip" in os.listdir():
         with open(".ip", "r", encoding="utf8") as file:
             ip = file.read()
-            with open("config.json", "w", encoding="utf8") as file:
-                json.dump(configdata.update({"ip": ip}))
+            with open("config.json", "w", encoding="utf8") as file2:
+                configdata.update({"ip": ip})
+                json.dump(configdata, file2)
         os.remove(".ip")
-        
-    
+print(ip)
 
 client = SimpleUDPClient(ip, port)
 
