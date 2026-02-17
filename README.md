@@ -13,6 +13,8 @@ CLIENT_SECRET=rjhtrgfdhhujncgtfd
 ```
 Fill in the Above with your Own Spotify App Credentials.
 
+Inside the bin folder, to set a Different IP for yall fucking Questies, Create a file called ".ip" and put the ip of your Quest Headset, this will allow you to use this on Quest.
+
 
 ### Don't fucking use this
 
